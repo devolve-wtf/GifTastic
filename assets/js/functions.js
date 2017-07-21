@@ -2,7 +2,7 @@ function Gify() {
 	this.apiKEY = '62b7c8fe352945ab958002bae159837b';
 	this.category = 'banana';
 	this.categories = ['banana', 'pug', 'car', 'cat']
-	this.dataURL = `http://api.giphy.com/v1/gifs/search?q=${this.category}&api_key=${this.apiKEY}&limit=20`;
+	this.dataURL = `https://api.giphy.com/v1/gifs/search?q=${this.category}&api_key=${this.apiKEY}&limit=20`;
 	this.object = {};
 }
 
@@ -44,7 +44,7 @@ Gify.prototype.displayResults = function() {
 
 Gify.prototype.search = function(done) {
 	let gify = this;
-	gify.dataURL = `http://api.giphy.com/v1/gifs/search?q=${gify.category}&api_key=${gify.apiKEY}&limit=20`;
+	gify.dataURL = `https://api.giphy.com/v1/gifs/search?q=${gify.category}&api_key=${gify.apiKEY}&limit=20`;
 	$.ajax({
 		url: gify.dataURL,
 		method: 'GET'
