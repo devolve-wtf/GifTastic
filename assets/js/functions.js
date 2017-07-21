@@ -8,22 +8,39 @@ function Gify() {
 
 Gify.prototype.displayResults = function() {
 	let gify = this;
+	let i = 1;
 	for(object in gify.object.data) {
 		let stillImage = gify.object.data[object].images.original_still.url;
 		let animatedImage = gify.object.data[object].images.original.url;
 		let rating = gify.object.data[object].rating;
-		$('#SearchResults').append(
-			`<div class="col-xs-12 col-sm-6 col-md-3">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 id="Rating" class="panel-title">rated <span>${rating}</span></h3>
-					</div>
-					<div class="panel-body">
-						<img class="img-responsive gify" src="${stillImage}" data-url="${animatedImage}">
-					</div>
+		let column = $('.ones');
+
+		if(i === 1) {
+			column = '.ones';
+			i++;
+		}else if(i === 2) {
+			column = '.twos';
+			i++;
+		}else if(i === 3) {
+			column = '.threes';
+			i++;
+		}else if(i === 4) {
+			column = '.fours';
+			i = 1;
+		}
+
+		$(column).append(
+
+			`<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 id="Rating" class="panel-title">rated <span>${rating}</span></h3>
+				</div>
+				<div class="panel-body">
+					<img class="img-responsive gify" src="${stillImage}" data-url="${animatedImage}">
 				</div>
 			</div>`
 		);
+
 	}
 }
 
@@ -36,7 +53,7 @@ Gify.prototype.search = function() {
 	}).done(function(res) {
 		gify.object = res;
 		console.log(gify.object);
-		$('#SearchResults').empty();
+		$('.ones, .twos, .threes, .fours').empty();
 		gify.displayResults();
 	});
 }
