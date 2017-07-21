@@ -30,21 +30,19 @@ Gify.prototype.displayResults = function() {
 		}
 
 		$(column).append(
-
 			`<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 id="Rating" class="panel-title">rated <span>${rating}</span></h3>
 				</div>
 				<div class="panel-body">
-					<img class="img-responsive gify" src="${stillImage}" data-url="${animatedImage}">
+					<img class="img-responsive gify" src="${stillImage}" data-animate="${animatedImage}" data-still="${stillImage}">
 				</div>
 			</div>`
 		);
-
 	}
 }
 
-Gify.prototype.search = function() {
+Gify.prototype.search = function(done) {
 	let gify = this;
 	gify.dataURL = `http://api.giphy.com/v1/gifs/search?q=${gify.category}&api_key=${gify.apiKEY}&limit=20`;
 	$.ajax({
@@ -52,9 +50,7 @@ Gify.prototype.search = function() {
 		method: 'GET'
 	}).done(function(res) {
 		gify.object = res;
-		console.log(gify.object);
-		$('.ones, .twos, .threes, .fours').empty();
-		gify.displayResults();
+		done(gify);
 	});
 }
 
@@ -76,20 +72,31 @@ Gify.prototype.addCategory = function() {
 	}
 }
 
-Gify.prototype.events = function() {
-	let gify = this;
+Gify.prototype.clearResults = function() {
+	$('.ones, .twos, .threes, .fours').empty();
+}
+
+Gify.prototype.registerListeners = function() {
+	let self = this;
 	$(document).on('click', '.category', function() {
-		gify.category = $(this).text();
-		gify.search();
+		self.category = $(this).text();
+		self.clearResults();
+		self.search(function(gify){
+			gify.displayResults();
+		});
 	});
 
 	$(document).on('click', '#SubmitCategory', function(event) {
 		event.preventDefault();
-		gify.addCategory();
+		self.addCategory();
 	});
 
 	$(document).on('click', '.gify', function() {
-		$(this).attr('src', ($(this).attr('data-url')));
+		if($(this).attr('src') === $(this).attr('data-still')) {
+			$(this).attr('src', ($(this).attr('data-animate')));
+		}else{
+			$(this).attr('src', ($(this).attr('data-still')));
+		}
 	});
 }
 
@@ -97,5 +104,5 @@ var gify = new Gify();
 
 $(document).ready(function() {
 	gify.defaultCategories();
-	gify.events();
+	gify.registerListeners();
 });
