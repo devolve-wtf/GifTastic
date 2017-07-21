@@ -11,9 +11,17 @@ Gify.prototype.displayResults = function() {
 	for(object in gify.object.data) {
 		let stillImage = gify.object.data[object].images.original_still.url;
 		let animatedImage = gify.object.data[object].images.original.url;
+		let rating = gify.object.data[object].rating;
 		$('#SearchResults').append(
 			`<div class="col-xs-12 col-sm-6 col-md-3">
-				<img class="img-responsive" src="${stillImage}">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 id="Rating" class="panel-title">rated <span>${rating}</span></h3>
+					</div>
+					<div class="panel-body">
+						<img class="img-responsive gify" src="${stillImage}" data-url="${animatedImage}">
+					</div>
+				</div>
 			</div>`
 		);
 	}
@@ -28,6 +36,7 @@ Gify.prototype.search = function() {
 	}).done(function(res) {
 		gify.object = res;
 		console.log(gify.object);
+		$('#SearchResults').empty();
 		gify.displayResults();
 	});
 }
@@ -60,6 +69,10 @@ Gify.prototype.events = function() {
 	$(document).on('click', '#SubmitCategory', function(event) {
 		event.preventDefault();
 		gify.addCategory();
+	});
+
+	$(document).on('click', '.gify', function() {
+		$(this).attr('src', ($(this).attr('data-url')));
 	});
 }
 
