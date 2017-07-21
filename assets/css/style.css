@@ -11,15 +11,16 @@ body {
 }
 
 #Categories {
-	margin-bottom: 20px;
+	//margin-bottom: 20px;
 }
 
 .category {
-	margin: 0 5px;
+	margin: 0 5px 20px 5px;
 }
 
 .gify {
 	margin: 0 auto;
+	width: 100%;
 }
 
 .gify:hover {
