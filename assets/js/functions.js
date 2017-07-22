@@ -61,7 +61,7 @@ Gify.prototype.defaultCategories = function() {
 }
 
 Gify.prototype.addCategory = function() {
-	let category = $('#NewCategory').val();
+	let category = $('#NewCategory').val().replace(/#/g, '').toLowerCase();
 
 	if(this.categories.indexOf(category) === -1) {
 		this.categories.push(category);
